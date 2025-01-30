@@ -164,7 +164,7 @@ function getWebviewContent() {
         </style>
     </head>
     <body>
-        <h2>Deepboi</h2>
+        <h2>Deepboi e</h2>
         <div class="chat-container" id="chat"></div>
         <div class="input-container">
             <textarea id="prompt" rows="2" placeholder="Ask something..."></textarea>
