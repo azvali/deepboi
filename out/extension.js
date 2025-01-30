@@ -164,7 +164,7 @@ function getWebviewContent() {
         </style>
     </head>
     <body>
-        <h2>Deep VS Code Extension</h2>
+        <h2>Deepboi</h2>
         <div class="chat-container" id="chat"></div>
         <div class="input-container">
             <textarea id="prompt" rows="2" placeholder="Ask something..."></textarea>
