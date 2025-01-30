@@ -78,35 +78,36 @@ function getWebviewContent() {
         <title>Deep VS Code Extension</title>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
             body {
                 font-family: 'Segoe UI', sans-serif;
-                margin: 0;
-                padding: 20px;
                 display: flex;
                 flex-direction: column;
-                align-items: center;
+                height: 100vh;
                 background-color: #1e1e1e;
                 color: white;
+                overflow: hidden;
             }
             h2 {
                 text-align: center;
-                margin-bottom: 15px;
+                padding: 10px;
                 font-size: 1.5rem;
+                background: #252526;
+                border-bottom: 1px solid #444;
             }
             .chat-container {
-                width: 90%;
-                max-width: 600px;
-                background: #252526;
-                padding: 15px;
-                border-radius: 10px;
+                flex-grow: 1;
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
-                border: 1px solid #444;
-                height: 400px;
                 overflow-y: auto;
+                padding: 15px;
+                background: #252526;
+                border-top: 1px solid #444;
                 scrollbar-width: thin;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             }
             .message {
                 padding: 12px 15px;
@@ -115,7 +116,7 @@ function getWebviewContent() {
                 word-wrap: break-word;
                 line-height: 1.5;
                 font-size: 14px;
-                opacity: 1;
+                margin-bottom: 10px;
             }
             .user-message {
                 background-color: #0078d7;
@@ -133,10 +134,9 @@ function getWebviewContent() {
             }
             .input-container {
                 display: flex;
-                gap: 10px;
-                margin-top: 10px;
-                width: 100%;
-                max-width: 600px;
+                padding: 10px;
+                background: #1e1e1e;
+                border-top: 1px solid #444;
             }
             textarea {
                 flex: 1;
@@ -148,6 +148,7 @@ function getWebviewContent() {
                 border-radius: 5px;
                 resize: none;
                 outline: none;
+                height: 40px;
             }
             button {
                 padding: 12px 15px;
@@ -157,6 +158,7 @@ function getWebviewContent() {
                 font-size: 16px;
                 border-radius: 5px;
                 cursor: pointer;
+                margin-left: 10px;
             }
             button:hover {
                 background-color: #005ea6;
@@ -172,46 +174,46 @@ function getWebviewContent() {
         </div>
 
         <script>
-		const vscode = acquireVsCodeApi();
-		const chatContainer = document.getElementById("chat");
-		const userInput = document.getElementById("prompt");
-		const askButton = document.getElementById("askBtn");
-		let lastBotMessage = null;
+        const vscode = acquireVsCodeApi();
+        const chatContainer = document.getElementById("chat");
+        const userInput = document.getElementById("prompt");
+        const askButton = document.getElementById("askBtn");
+        let lastBotMessage = null;
 
-		askButton.addEventListener("click", function() {
-			const text = userInput.value.trim();
-			if (text === "") return;
+        askButton.addEventListener("click", function() {
+            const text = userInput.value.trim();
+            if (text === "") return;
 
-			addMessage(text, "user-message");
-			userInput.value = "";
-			vscode.postMessage({ command: 'chat', text });
+            addMessage(text, "user-message");
+            userInput.value = "";
+            vscode.postMessage({ command: 'chat', text });
 
-			lastBotMessage = addMessage("**Thinking...**", "bot-message");
-		});
+            lastBotMessage = addMessage("**Thinking...**", "bot-message");
+        });
 
-		window.addEventListener('message', event => {
-			const { command, text } = event.data;
-			if (command === 'chatResponse' && lastBotMessage) {
-				lastBotMessage.innerHTML = marked.parse(text);
-				scrollToBottom(); // Auto-scroll to the latest response
-			}
-		});
+        window.addEventListener('message', event => {
+            const { command, text } = event.data;
+            if (command === 'chatResponse' && lastBotMessage) {
+                lastBotMessage.innerHTML = marked.parse(text);
+                scrollToBottom(); // Auto-scroll to latest response
+            }
+        });
 
-		function addMessage(text, className) {
-			const messageDiv = document.createElement("div");
-			messageDiv.className = "message " + className;
-			messageDiv.innerHTML = marked.parse(text);
-			chatContainer.appendChild(messageDiv);
-			scrollToBottom(); // Ensure it scrolls down
-			return messageDiv;
-		}
+        function addMessage(text, className) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "message " + className;
+            messageDiv.innerHTML = marked.parse(text);
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+            return messageDiv;
+        }
 
-		function scrollToBottom() {
-			setTimeout(() => {
-				chatContainer.scrollTop = chatContainer.scrollHeight;
-			}, 100);
-		}
-	</script>
+        function scrollToBottom() {
+            setTimeout(() => {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 100);
+        }
+        </script>
     </body>
     </html>
     `;
