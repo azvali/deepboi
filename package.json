@@ -3,7 +3,7 @@
   "displayName": "Deepboi",
   "description": "A VS Code extension for DeepSeek AI chatbot.",
   "version": "0.0.1",
-  "publisher": "yousefm2315", 
+  "publisher": "azvali", 
   "engines": {
     "vscode": "^1.96.0"
   },
